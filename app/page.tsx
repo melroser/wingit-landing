@@ -330,7 +330,7 @@ export default function Page() {
   ];
 
   return (
-    <main className="min-h-screen bg-loom">
+    <main className="min-h-screen bg-white text-zinc-950">
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
