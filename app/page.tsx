@@ -224,7 +224,7 @@ export default function Page() {
     {
       title: "Wingit",
       href: LINKS.wingit,
-      desc: "AI presentations that don’t look like AI.",
+      desc: "Presentations for Procrastinators",
     },
     { title: "GetTheBag", href: "#", desc: "Placeholder link (coming soon)." },
     { title: "Moreannon", href: "#", desc: "Placeholder link (coming soon)." },
@@ -338,11 +338,10 @@ export default function Page() {
           </div>
 
           <h1 className="mt-5 text-balance text-5xl font-semibold tracking-tight text-zinc-950 sm:text-6xl">
-            Presentations that don’t look like AI.
+            Presentations for Procrastinators
           </h1>
-
           <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-zinc-600 sm:text-xl">
-            Generate clean, on-brand decks fast — refine them like a doc, then share instantly.
+            Generates the slides while you do the talking.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -357,12 +356,12 @@ export default function Page() {
           {/* placeholder strip */}
           <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-zinc-200 bg-white/70 px-4 py-4 shadow-sm">
             <div className="text-center text-xs font-semibold text-zinc-500">
-              Placeholders for “works with” / credibility strip
+              About to put these people out of business
             </div>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold text-zinc-500">
               <span>PowerPoint</span>
-              <span>Slides</span>
-              <span>Keynote</span>
+              <span>Google Slides</span>
+              <span>Apple Keynote</span>
               <span>Notion</span>
               <span>Slack</span>
               <span>Figma</span>
@@ -376,9 +375,9 @@ export default function Page() {
         <div className="relative mx-auto max-w-5xl">
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-tr from-indigo-200/60 via-pink-200/40 to-emerald-200/40 blur-2xl" />
           <div className="overflow-hidden rounded-[2.5rem] border border-zinc-200 bg-white shadow-[0_30px_120px_-60px_rgba(0,0,0,0.35)]">
-            <div className="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-5 py-3">
-              <div className="text-xs font-semibold text-zinc-700">Wingit hero demo (sound)</div>
-              <div className="text-xs text-zinc-500">/public/demo.mp4</div>
+            <div className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-2.5">
+              <div className="text-xs font-semibold text-zinc-700">Wingit Demo</div>
+              <div className="text-xs text-zinc-500">Demo (43s)</div>
             </div>
 
             {/* SOUND works because no autoplay and not muted */}
@@ -410,7 +409,7 @@ export default function Page() {
           </div>
 
           <div className="mt-4 text-center text-xs text-zinc-500">
-            If the video is silent, re-encode WITHOUT <code className="rounded bg-white/70 px-1 py-0.5">-an</code>.
+            I mean. It will probably be better than nothing... <code className="rounded bg-white/70 px-1 py-0.5">probably</code>.
           </div>
         </div>
       </section>
@@ -419,8 +418,8 @@ export default function Page() {
       <section id="solutions" className="mx-auto max-w-6xl px-4 pb-24">
         <SectionHeading
           eyebrow="SOLUTIONS"
-          title="Scroll to each use-case demo."
-          desc="Top nav → Solutions jumps here. Mini-nav below jumps to each clip."
+          title="Scroll Down Below For Examples"
+          desc="Click To Jump"
         />
 
         {/* mini-nav that scrolls to each solution */}
