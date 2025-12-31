@@ -14,6 +14,66 @@ import React from "react";
 function cx(...parts: Array<string | false | undefined>) {
   return parts.filter(Boolean).join(" ");
 }
+const MenuIcon = (p: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" {...p}>
+    <path
+      d="M4 7h16M4 12h16M4 17h16"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const XIcon = (p: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" {...p}>
+    <path
+      d="M6 6l12 12M18 6L6 18"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+function MobileDisclosure({
+  label,
+  items,
+  open,
+  onToggle,
+}: {
+  label: string;
+  items: Array<{ title: string; href: string; desc?: string }>;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-zinc-200 bg-white">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-zinc-900"
+      >
+        <span>{label}</span>
+        <ChevronDown className={cx("h-4 w-4 text-zinc-500 transition", open && "rotate-180")} />
+      </button>
+      {open ? (
+        <div className="border-t border-zinc-200 p-2">
+          {items.map((it) => (
+            <a
+              key={it.title}
+              href={it.href}
+              className="block rounded-xl px-3 py-2.5 hover:bg-zinc-50"
+            >
+              <div className="text-sm font-semibold text-zinc-900">{it.title}</div>
+              {it.desc ? <div className="mt-0.5 text-xs text-zinc-600">{it.desc}</div> : null}
+            </a>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 const ChevronDown = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}>
@@ -43,19 +103,22 @@ function Button({
   children,
   href,
   variant = "primary",
+  className,
 }: {
   children: React.ReactNode;
   href: string;
   variant?: "primary" | "ghost";
+  className?: string;
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-indigo-200";
+    // key change: rounded-xl on mobile, rounded-full on sm+
+    "inline-flex items-center justify-center gap-2 rounded-xl sm:rounded-full px-4 sm:px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-indigo-200 whitespace-nowrap";
   const styles =
     variant === "primary"
       ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
       : "bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 shadow-sm";
   return (
-    <a href={href} className={cx(base, styles)}>
+    <a href={href} className={cx(base, styles, className)}>
       {children}
     </a>
   );
@@ -211,6 +274,23 @@ function SolutionRow({
 }
 
 export default function Page() {
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [appsOpen, setAppsOpen] = React.useState(false);
+    const [resourcesOpen, setResourcesOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   // You provided these exact URLs (even though mode params look reversed—using your values verbatim)
   const LINKS = {
     wingit: "https://wingit.dev",
@@ -257,7 +337,6 @@ export default function Page() {
           {/* Brand left */}
           <div className="flex items-center gap-4">
             <a href="https://devs.miami" className="flex items-center gap-3">
-              {/* Devs.Miami logo */}
               <div className="h-10 w-10 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
                 <img
                   src="/brand/devs-miami.jpeg"
@@ -266,7 +345,6 @@ export default function Page() {
                 />
               </div>
 
-              {/* Wingit logo + text */}
               <div className="flex items-center gap-2">
                 <div className="hidden h-8 w-8 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm sm:block">
                   <img
@@ -276,12 +354,8 @@ export default function Page() {
                   />
                 </div>
                 <div className="leading-tight">
-                  <div className="text-xs font-semibold text-zinc-500">
-                    devs.miami
-                  </div>
-                  <div className="text-sm font-semibold tracking-tight text-zinc-900">
-                    Wingit
-                  </div>
+                  <div className="text-xs font-semibold text-zinc-500">devs.miami</div>
+                  <div className="text-sm font-semibold tracking-tight text-zinc-900">Wingit</div>
                 </div>
               </div>
             </a>
@@ -289,17 +363,13 @@ export default function Page() {
             {/* Desktop nav */}
             <nav className="hidden items-center gap-1 md:flex">
               <NavDropdown label="Apps" items={apps} />
-
-              {/* This is what you wanted: Solutions link just scrolls */}
               <a
                 href="#solutions"
                 className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/70"
               >
                 Solutions
               </a>
-
               <NavDropdown label="Resources" items={resources} />
-
               <a
                 href="#pricing"
                 className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100/70"
@@ -309,11 +379,11 @@ export default function Page() {
             </nav>
           </div>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-2">
+          {/* Right actions (desktop) */}
+          <div className="hidden items-center gap-2 md:flex">
             <a
               href={LINKS.signIn}
-              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 md:inline-flex"
+              className="rounded-full px-4 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950"
             >
               Sign In
             </a>
@@ -322,7 +392,88 @@ export default function Page() {
               Contact
             </Button>
           </div>
+
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 shadow-sm md:hidden"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+          >
+            <MenuIcon className="h-5 w-5" />
+          </button>
         </div>
+
+        {/* Mobile overlay */}
+        {mobileOpen ? (
+          <div className="md:hidden">
+            <div
+              className="fixed inset-0 z-50 bg-black/30"
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className="fixed right-0 top-0 z-50 h-full w-[92%] max-w-sm border-l border-zinc-200 bg-white p-4 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-zinc-900">Wingit</div>
+                <button
+                  type="button"
+                  className="rounded-xl border border-zinc-200 bg-white p-2"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                >
+                  <XIcon className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="mt-4 grid gap-3">
+                <MobileDisclosure
+                  label="Apps"
+                  items={apps}
+                  open={appsOpen}
+                  onToggle={() => setAppsOpen((v) => !v)}
+                />
+
+                <a
+                  href="#solutions"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-50"
+                >
+                  Solutions
+                </a>
+
+                <MobileDisclosure
+                  label="Resources"
+                  items={resources}
+                  open={resourcesOpen}
+                  onToggle={() => setResourcesOpen((v) => !v)}
+                />
+
+                <a
+                  href="#pricing"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-50"
+                >
+                  Pricing
+                </a>
+
+                <div className="mt-2 grid gap-2">
+                  <Button href={LINKS.signUp} className="w-full">
+                    Try Wingit Free
+                  </Button>
+                  <Button href={LINKS.signIn} variant="ghost" className="w-full">
+                    Sign In
+                  </Button>
+                  <Button href="#contact" variant="ghost" className="w-full">
+                    Contact
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mt-6 text-xs text-zinc-500">
+                Tip: mobile menus need click/tap — hover dropdowns don’t work on phones.
+              </div>
+            </div>
+          </div>
+        ) : null}
       </header>
 
       {/* HERO (first view: big text + subheading; video comes after scroll) */}
@@ -376,13 +527,13 @@ export default function Page() {
           <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-tr from-indigo-200/60 via-pink-200/40 to-emerald-200/40 blur-2xl" />
           <div className="overflow-hidden rounded-[2.5rem] border border-zinc-200 bg-white shadow-[0_30px_120px_-60px_rgba(0,0,0,0.35)]">
             <div className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-2.5">
-              <div className="text-xs font-semibold text-zinc-700">Wingit Demo</div>
+              <div className="text-xs font-semibold text-zinc-700">Wingit</div>
               <div className="text-xs text-zinc-500">Demo (43s)</div>
             </div>
 
             {/* SOUND works because no autoplay and not muted */}
             <video
-              className="aspect-video w-full bg-black"
+              className="aspect-video w-full bg-white"
               controls
               playsInline
               preload="metadata"
