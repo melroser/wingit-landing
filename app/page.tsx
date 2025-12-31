@@ -330,7 +330,13 @@ export default function Page() {
   ];
 
   return (
-    <main className="min-h-screen bg-white text-zinc-950">
+    <main className="min-h-screen text-zinc-950"
+        style={{
+            backgroundColor: "#ffffff",
+            backgroundImage:
+            "linear-gradient(to right, rgba(15,23,42,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.06) 1px, transparent 1px)",
+            backgroundSize: "96px 96px",
+        }} >
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
