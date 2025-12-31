@@ -1,10 +1,37 @@
 @import "tailwindcss";
 
-:root { color-scheme: light; }
-html, body { height: 100%; }
-body { @apply bg-white text-zinc-950 antialiased; }
+/* HARD FORCE LIGHT everywhere */
+:root {
+  color-scheme: light;
+}
 
+html,
+body {
+  height: 100%;
+  background: #ffffff !important;
+  color: #09090b !important; /* zinc-950-ish */
+}
+
+/* If the browser/device insists you're in dark mode, override it anyway */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+    color: #09090b !important;
+  }
+}
+
+body {
+  /* Tailwind baseline (still fine) */
+  @apply antialiased;
+}
+
+/* Loom-ish light grid + soft color glows */
 .bg-loom {
+  background-color: #ffffff !important; /* critical */
   background-image:
     radial-gradient(900px 500px at 50% 0%, rgba(99,102,241,0.16), transparent 60%),
     radial-gradient(800px 450px at 15% 25%, rgba(236,72,153,0.10), transparent 60%),
@@ -13,5 +40,6 @@ body { @apply bg-white text-zinc-950 antialiased; }
     linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px);
   background-size: auto, auto, auto, 72px 72px, 72px 72px;
   background-position: center, center, center, top left, top left;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat;
 }
 
