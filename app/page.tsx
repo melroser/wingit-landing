@@ -495,7 +495,7 @@ export default function Page() {
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2">
             <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
-              app.wingit.dev
+              https://douglas.tail2c7b1a.ts.net/
             </span>
             <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
               demos + placeholders (for now)
