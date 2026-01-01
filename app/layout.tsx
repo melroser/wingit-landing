@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+ metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://wingit.dev"),
   title: "WingIt — AI presentations that don’t look like AI",
   description:
     "Generate clean, on-brand slide decks fast. Edit like a doc. Present live. Share instantly.",

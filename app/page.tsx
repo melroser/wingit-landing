@@ -1,5 +1,7 @@
 "use client";
 
+
+
 import React from "react";
 
 /**
@@ -224,7 +226,7 @@ function SolutionRow({
         <p className="mt-3 text-zinc-600">{desc}</p>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <Button href="https://app.wingit.dev" variant="ghost">
+          <Button href="https://douglas.tail2c7b1a.ts.net" variant="ghost">
             Open app <ArrowRight className="h-4 w-4" />
           </Button>
           <Button href="#contact" variant="ghost">
@@ -293,10 +295,10 @@ export default function Page() {
 
   // You provided these exact URLs (even though mode params look reversed—using your values verbatim)
   const LINKS = {
-    wingit: "https://wingit.dev",
-    app: "https://app.wingit.dev",
-    signIn: "https://app.wingit.dev/auth?mode=register",
-    signUp: "https://app.wingit.dev/auth?mode=login",
+    wingit: "https://douglas.tail2c7b1a.ts.net",
+    app: "https://douglas.tail2c7b1a.ts.net",
+    signIn: "https://douglas.tail2c7b1a.ts.net/auth?mode=register",
+    signUp: "https://douglas.tail2c7b1a.ts.net/auth?mode=register",
   };
 
   // Dropdown content (placeholders included)
@@ -306,8 +308,8 @@ export default function Page() {
       href: LINKS.wingit,
       desc: "Presentations for Procrastinators",
     },
-    { title: "GetTheBag", href: "#", desc: "Placeholder link (coming soon)." },
-    { title: "Moreannon", href: "#", desc: "Placeholder link (coming soon)." },
+    { title: "GetTheBag", href: "#", desc: "Jira for jobseekers" },
+    { title: "Moreannon", href: "#", desc: "MCP Tool for AI Consensus" },
   ];
 
   const resources = [
@@ -393,6 +395,12 @@ export default function Page() {
             >
               Sign In
             </a>
+            <a
+  href={LINKS.signUp}
+  className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+>
+  Try WingIt Free
+</a>
             <Button href={LINKS.signUp}>Try Wingit Free</Button>
             <Button href="#contact" variant="ghost">
               Contact
