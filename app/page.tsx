@@ -244,7 +244,7 @@ function SolutionRow({
 
         <div className="mt-5 flex flex-wrap gap-3">
           <Button
-            href="app.wingit.dev"
+            href="https://app.wingit.dev"
             variant="ghost"
             onClick={() => {
               posthog.capture('cta_open_app_clicked', {
@@ -330,9 +330,9 @@ export default function Page() {
 
   // You provided these exact URLs (even though mode params look reversed—using your values verbatim)
   const LINKS = {
-    wingit: "app.wingit.dev",
+    wingit: "https://app.wingit.dev",
     app: "https://app.wingit.dev",
-    signIn: "https://app.wingit.dev/auth?mode=register",
+    signIn: "https://app.wingit.dev/auth?mode=login",
     signUp: "https://app.wingit.dev/auth?mode=register",
   };
 
