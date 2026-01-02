@@ -1,8 +1,7 @@
 "use client";
 
-
-
 import React from "react";
+import posthog from "posthog-js";
 
 /**
  * WingIt Landing — Loom-ish desktop hero + sticky nav + dropdowns
@@ -66,6 +65,14 @@ function MobileDisclosure({
               key={it.title}
               href={it.href}
               className="block rounded-xl px-3 py-2.5 hover:bg-zinc-50"
+              onClick={() => {
+                posthog.capture('nav_dropdown_item_clicked', {
+                  dropdown_label: label,
+                  item_title: it.title,
+                  item_href: it.href,
+                  device_type: 'mobile',
+                });
+              }}
             >
               <div className="text-sm font-semibold text-zinc-900">{it.title}</div>
               {it.desc ? <div className="mt-0.5 text-xs text-zinc-600">{it.desc}</div> : null}
@@ -106,11 +113,13 @@ function Button({
   href,
   variant = "primary",
   className,
+  onClick,
 }: {
   children: React.ReactNode;
   href: string;
   variant?: "primary" | "ghost";
   className?: string;
+  onClick?: () => void;
 }) {
   const base =
     // key change: rounded-xl on mobile, rounded-full on sm+
@@ -120,7 +129,7 @@ function Button({
       ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
       : "bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 shadow-sm";
   return (
-    <a href={href} className={cx(base, styles, className)}>
+    <a href={href} className={cx(base, styles, className)} onClick={onClick}>
       {children}
     </a>
   );
@@ -153,6 +162,14 @@ function NavDropdown({
                 key={it.title}
                 href={it.href}
                 className="block rounded-xl px-3 py-2.5 hover:bg-zinc-50"
+                onClick={() => {
+                  posthog.capture('nav_dropdown_item_clicked', {
+                    dropdown_label: label,
+                    item_title: it.title,
+                    item_href: it.href,
+                    device_type: 'desktop',
+                  });
+                }}
               >
                 <div className="text-sm font-semibold text-zinc-900">
                   {it.title}
@@ -226,10 +243,28 @@ function SolutionRow({
         <p className="mt-3 text-zinc-600">{desc}</p>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <Button href="https://douglas.tail2c7b1a.ts.net" variant="ghost">
+          <Button
+            href="app.wingit.dev"
+            variant="ghost"
+            onClick={() => {
+              posthog.capture('cta_open_app_clicked', {
+                location: 'solution_row',
+                solution_title: title,
+              });
+            }}
+          >
             Open app <ArrowRight className="h-4 w-4" />
           </Button>
-          <Button href="#contact" variant="ghost">
+          <Button
+            href="#contact"
+            variant="ghost"
+            onClick={() => {
+              posthog.capture('cta_contact_clicked', {
+                location: 'solution_row',
+                solution_title: title,
+              });
+            }}
+          >
             Contact
           </Button>
         </div>
@@ -295,10 +330,10 @@ export default function Page() {
 
   // You provided these exact URLs (even though mode params look reversed—using your values verbatim)
   const LINKS = {
-    wingit: "https://douglas.tail2c7b1a.ts.net",
-    app: "https://douglas.tail2c7b1a.ts.net",
-    signIn: "https://douglas.tail2c7b1a.ts.net/auth?mode=register",
-    signUp: "https://douglas.tail2c7b1a.ts.net/auth?mode=register",
+    wingit: "app.wingit.dev",
+    app: "https://app.wingit.dev",
+    signIn: "https://app.wingit.dev/auth?mode=register",
+    signUp: "https://app.wingit.dev/auth?mode=register",
   };
 
   // Dropdown content (placeholders included)
@@ -392,17 +427,44 @@ export default function Page() {
             <a
               href={LINKS.signIn}
               className="rounded-full px-4 py-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950"
+              onClick={() => {
+                posthog.capture('cta_sign_in_clicked', {
+                  location: 'nav_desktop',
+                });
+              }}
             >
               Sign In
             </a>
             <a
-  href={LINKS.signUp}
-  className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
->
-  Try WingIt Free
-</a>
-            <Button href={LINKS.signUp}>Try Wingit Free</Button>
-            <Button href="#contact" variant="ghost">
+              href={LINKS.signUp}
+              className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+              onClick={() => {
+                posthog.capture('cta_try_wingit_free_clicked', {
+                  location: 'nav_desktop_inline',
+                });
+              }}
+            >
+              Try WingIt Free
+            </a>
+            <Button
+              href={LINKS.signUp}
+              onClick={() => {
+                posthog.capture('cta_try_wingit_free_clicked', {
+                  location: 'nav_desktop',
+                });
+              }}
+            >
+              Try Wingit Free
+            </Button>
+            <Button
+              href="#contact"
+              variant="ghost"
+              onClick={() => {
+                posthog.capture('cta_contact_clicked', {
+                  location: 'nav_desktop',
+                });
+              }}
+            >
               Contact
             </Button>
           </div>
@@ -411,7 +473,10 @@ export default function Page() {
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 shadow-sm md:hidden"
-            onClick={() => setMobileOpen(true)}
+            onClick={() => {
+              setMobileOpen(true);
+              posthog.capture('mobile_menu_opened');
+            }}
             aria-label="Open menu"
           >
             <MenuIcon className="h-5 w-5" />
@@ -470,13 +535,39 @@ export default function Page() {
                 </a>
 
                 <div className="mt-2 grid gap-2">
-                  <Button href={LINKS.signUp} className="w-full">
+                  <Button
+                    href={LINKS.signUp}
+                    className="w-full"
+                    onClick={() => {
+                      posthog.capture('cta_try_wingit_free_clicked', {
+                        location: 'mobile_menu',
+                      });
+                    }}
+                  >
                     Try Wingit Free
                   </Button>
-                  <Button href={LINKS.signIn} variant="ghost" className="w-full">
+                  <Button
+                    href={LINKS.signIn}
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => {
+                      posthog.capture('cta_sign_in_clicked', {
+                        location: 'mobile_menu',
+                      });
+                    }}
+                  >
                     Sign In
                   </Button>
-                  <Button href="#contact" variant="ghost" className="w-full">
+                  <Button
+                    href="#contact"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => {
+                      posthog.capture('cta_contact_clicked', {
+                        location: 'mobile_menu',
+                      });
+                    }}
+                  >
                     Contact
                   </Button>
                 </div>
@@ -495,7 +586,7 @@ export default function Page() {
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2">
             <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
-              https://douglas.tail2c7b1a.ts.net/
+              app.wingit.dev/
             </span>
             <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
               demos + placeholders (for now)
@@ -510,10 +601,25 @@ export default function Page() {
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button href={LINKS.signUp}>
+            <Button
+              href={LINKS.signUp}
+              onClick={() => {
+                posthog.capture('cta_try_wingit_free_clicked', {
+                  location: 'hero',
+                });
+              }}
+            >
               Try Wingit Free <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button href="#hero-demo" variant="ghost">
+            <Button
+              href="#hero-demo"
+              variant="ghost"
+              onClick={() => {
+                posthog.capture('cta_watch_demo_clicked', {
+                  location: 'hero',
+                });
+              }}
+            >
               Watch demo
             </Button>
           </div>
@@ -552,6 +658,11 @@ export default function Page() {
               playsInline
               preload="metadata"
               poster="/demo-poster.png"
+              onPlay={() => {
+                posthog.capture('hero_demo_video_played', {
+                  video_src: '/demo.mp4',
+                });
+              }}
             >
               <source src="/demo.mp4" type="video/mp4" />
             </video>
@@ -594,6 +705,12 @@ export default function Page() {
               key={x.href}
               href={x.href}
               className="rounded-full border border-zinc-200 bg-white/70 px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-white hover:text-zinc-950 shadow-sm"
+              onClick={() => {
+                posthog.capture('solution_nav_clicked', {
+                  solution_label: x.label,
+                  solution_href: x.href,
+                });
+              }}
             >
               {x.label}
             </a>
@@ -700,10 +817,26 @@ export default function Page() {
             Placeholder. Hook this up to email, a form, or Calendly.
           </p>
           <div className="mt-5 flex flex-wrap justify-start gap-3">
-            <Button href="mailto:rob@devs.miami?subject=Wingit%20demo" variant="primary">
+            <Button
+              href="mailto:rob@devs.miami?subject=Wingit%20demo"
+              variant="primary"
+              onClick={() => {
+                posthog.capture('cta_email_us_clicked', {
+                  location: 'contact_section',
+                });
+              }}
+            >
               Email us
             </Button>
-            <Button href={LINKS.app} variant="ghost">
+            <Button
+              href={LINKS.app}
+              variant="ghost"
+              onClick={() => {
+                posthog.capture('cta_open_app_clicked', {
+                  location: 'contact_section',
+                });
+              }}
+            >
               Open app
             </Button>
           </div>
@@ -714,16 +847,48 @@ export default function Page() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 text-xs text-zinc-500 sm:flex-row">
           <div>© {new Date().getFullYear()} devs.miami</div>
           <div className="flex flex-wrap items-center gap-4">
-            <a className="hover:text-zinc-900" href="#">
+            <a
+              className="hover:text-zinc-900"
+              href="#"
+              onClick={() => {
+                posthog.capture('footer_link_clicked', {
+                  link_label: 'Privacy',
+                });
+              }}
+            >
               Privacy (placeholder)
             </a>
-            <a className="hover:text-zinc-900" href="#">
+            <a
+              className="hover:text-zinc-900"
+              href="#"
+              onClick={() => {
+                posthog.capture('footer_link_clicked', {
+                  link_label: 'Terms',
+                });
+              }}
+            >
               Terms (placeholder)
             </a>
-            <a className="hover:text-zinc-900" href={LINKS.signIn}>
+            <a
+              className="hover:text-zinc-900"
+              href={LINKS.signIn}
+              onClick={() => {
+                posthog.capture('cta_sign_in_clicked', {
+                  location: 'footer',
+                });
+              }}
+            >
               Sign In
             </a>
-            <a className="hover:text-zinc-900" href={LINKS.signUp}>
+            <a
+              className="hover:text-zinc-900"
+              href={LINKS.signUp}
+              onClick={() => {
+                posthog.capture('cta_sign_up_clicked', {
+                  location: 'footer',
+                });
+              }}
+            >
               Sign Up
             </a>
           </div>
