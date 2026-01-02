@@ -10,7 +10,7 @@ if (typeof window !== "undefined" && key) {
   posthog.init(key, {
     api_host: apiHost,
     ui_host: uiHost,
-    defaults: "2025-05-24",
+    defaults: "2025-11-30",
     capture_exceptions: true,
     debug: !isProd,
   });
