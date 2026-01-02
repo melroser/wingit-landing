@@ -13,6 +13,7 @@ if (typeof window !== "undefined" && key) {
     defaults: "2025-11-30",
     capture_exceptions: true,
     debug: !isProd,
+    person_profiles: 'always', // or 'always' to create profiles for anonymous users as well
   });
 
   // make it accessible in DevTools
