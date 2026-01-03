@@ -379,7 +379,7 @@ export default function Page() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           {/* Brand left */}
           <div className="flex items-center gap-4">
-            <a href="https://devs.miami" className="flex items-center gap-3">
+            <a href="https://wingit.dev" className="flex items-center gap-3">
               <div className="flex items-center gap-2">
 
                 <div className="hidden h-15 w-15 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm sm:block">
