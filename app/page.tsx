@@ -437,7 +437,7 @@ export default function Page() {
                 });
               }}
             >
-              Try Wingit Free
+              Try Wingit
             </Button>
             <Button
               href="#contact"
