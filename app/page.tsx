@@ -380,25 +380,19 @@ export default function Page() {
           {/* Brand left */}
           <div className="flex items-center gap-4">
             <a href="https://devs.miami" className="flex items-center gap-3">
-              <div className="h-10 w-10 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
-                <img
-                  src="/brand/devs-miami.jpeg"
-                  alt="Devs.Miami"
-                  className="h-full w-full object-contain p-1"
-                />
-              </div>
-
               <div className="flex items-center gap-2">
-                <div className="hidden h-8 w-8 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm sm:block">
+
+                <div className="hidden h-15 w-15 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm sm:block">
                   <img
                     src="/brand/wingit.png"
                     alt="Wingit"
                     className="h-full w-full object-contain p-1"
                   />
                 </div>
+
                 <div className="leading-tight">
-                  <div className="text-xs font-semibold text-zinc-500">devs.miami</div>
-                  <div className="text-sm font-semibold tracking-tight text-zinc-900">Wingit</div>
+                    <div className="text-xs font-semibold text-zinc-500">devs.miami</div>
+                    <div className="text-lg font-semibold tracking-tight text-zinc-900">Wingit</div>
                 </div>
               </div>
             </a>
@@ -433,18 +427,7 @@ export default function Page() {
                 });
               }}
             >
-              Sign In
-            </a>
-            <a
-              href={LINKS.signUp}
-              className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
-              onClick={() => {
-                posthog.capture('cta_try_wingit_free_clicked', {
-                  location: 'nav_desktop_inline',
-                });
-              }}
-            >
-              Try WingIt Free
+              LogIn
             </a>
             <Button
               href={LINKS.signUp}
@@ -585,11 +568,26 @@ export default function Page() {
       <section className="mx-auto max-w-6xl px-4 pb-12 pt-14">
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2">
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
-              app.wingit.dev/
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Talk
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
-              demos + placeholders (for now)
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Transcribe
+            </span>
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Visualize
+            </span>
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Broadcast
+            </span>
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Replay
+            </span>
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Share
+            </span>
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+                Export
             </span>
           </div>
 
@@ -597,47 +595,10 @@ export default function Page() {
             Presentations for Procrastinators
           </h1>
           <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-zinc-600 sm:text-xl">
-            Generates the slides while you do the talking.
+            AI Generated Slides While You Do The Talking!
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button
-              href={LINKS.signUp}
-              onClick={() => {
-                posthog.capture('cta_try_wingit_free_clicked', {
-                  location: 'hero',
-                });
-              }}
-            >
-              Try Wingit Free <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button
-              href="#hero-demo"
-              variant="ghost"
-              onClick={() => {
-                posthog.capture('cta_watch_demo_clicked', {
-                  location: 'hero',
-                });
-              }}
-            >
-              Watch demo
-            </Button>
-          </div>
 
-          {/* placeholder strip */}
-          <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-zinc-200 bg-white/70 px-4 py-4 shadow-sm">
-            <div className="text-center text-xs font-semibold text-zinc-500">
-              About to put these people out of business
-            </div>
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold text-zinc-500">
-              <span>PowerPoint</span>
-              <span>Google Slides</span>
-              <span>Apple Keynote</span>
-              <span>Notion</span>
-              <span>Slack</span>
-              <span>Figma</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -689,6 +650,49 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-12 pt-14">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button
+              href={LINKS.signUp}
+              onClick={() => {
+                posthog.capture('cta_try_wingit_free_clicked', {
+                  location: 'hero',
+                });
+              }}
+            >
+             Try It Out! <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button
+              href="#hero-demo"
+              variant="ghost"
+              onClick={() => {
+                posthog.capture('cta_watch_demo_clicked', {
+                  location: 'hero',
+                });
+              }}
+            >
+              Watch Demo
+            </Button>
+          </div>
+
+
+          {/* placeholder strip */}
+          <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-zinc-200 bg-white/70 px-4 py-4 shadow-sm">
+            <div className="text-center text-xs font-semibold text-zinc-500">
+              About to put these people out of business
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold text-zinc-500">
+              <span>PowerPoint</span>
+              <span>Google Slides</span>
+              <span>Apple Keynote</span>
+              <span>Notion</span>
+              <span>Slack</span>
+              <span>Figma</span>
+            </div>
+          </div>
+
+        </section>
 
       {/* SOLUTIONS (down the page; nav scrolls to each media) */}
       <section id="solutions" className="mx-auto max-w-6xl px-4 pb-24">
@@ -818,7 +822,7 @@ export default function Page() {
           </p>
           <div className="mt-5 flex flex-wrap justify-start gap-3">
             <Button
-              href="mailto:rob@devs.miami?subject=Wingit%20demo"
+              href="mailto:info@devs.miami?subject=Wingit%20demo"
               variant="primary"
               onClick={() => {
                 posthog.capture('cta_email_us_clicked', {
@@ -844,30 +848,41 @@ export default function Page() {
       </section>
 
       <footer className="border-t border-zinc-200 bg-white/60">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 text-xs text-zinc-500 sm:flex-row">
-          <div>© {new Date().getFullYear()} devs.miami</div>
+      
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-xs text-zinc-500 sm:flex-row">
+
+        <div className="hidden h-7 w-7 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm sm:block">
+            <img
+            src="/brand/devs-miami.jpeg"
+            alt="Devs.Miami"
+            className="h-full w-full object-contain p-1"
+            />
+        </div>
+          <div>
+          © {new Date().getFullYear()} Devs Miami LLC</div>
           <div className="flex flex-wrap items-center gap-4">
+
             <a
               className="hover:text-zinc-900"
-              href="#"
+              href="#privacy"
               onClick={() => {
                 posthog.capture('footer_link_clicked', {
                   link_label: 'Privacy',
                 });
               }}
             >
-              Privacy (placeholder)
+              Privacy Policy
             </a>
             <a
               className="hover:text-zinc-900"
-              href="#"
+              href="#terms"
               onClick={() => {
                 posthog.capture('footer_link_clicked', {
                   link_label: 'Terms',
                 });
               }}
             >
-              Terms (placeholder)
+              Terms and Conditions
             </a>
             <a
               className="hover:text-zinc-900"
