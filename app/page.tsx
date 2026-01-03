@@ -367,13 +367,7 @@ export default function Page() {
   ];
 
   return (
-    <main className="min-h-screen text-zinc-950"
-        style={{
-            backgroundColor: "#ffffff",
-            backgroundImage:
-            "linear-gradient(to right, rgba(15,23,42,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.06) 1px, transparent 1px)",
-            backgroundSize: "96px 96px",
-        }} >
+    <main className="min-h-screen text-zinc-950 bg-loom"> 
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
@@ -566,39 +560,53 @@ export default function Page() {
 
       {/* HERO (first view: big text + subheading; video comes after scroll) */}
       <section className="mx-auto max-w-6xl px-4 pb-12 pt-14">
+        <div className="mx-auto max-w-4xl text-center gap-2">
+
+          <h1 className="mt-5 text-balance text-5xl font-semibold tracking-tight text-zinc-950 sm:text-6xl">
+            Wingit
+          </h1>
+          <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-zinc-600 sm:text-xl">
+             AI Generated Slides While You Do The Talking!
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-12 pt-14">
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-2">
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Talk
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Transcribe
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Visualize
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Broadcast
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Replay
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Share
             </span>
-            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-semi text-zinc-400 shadow-sm">
+            <span className="rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-lg font-semi text-zinc-400 shadow-sm">
                 Export
             </span>
           </div>
+          </div>
+      </section>
 
-          <h1 className="mt-5 text-balance text-5xl font-semibold tracking-tight text-zinc-950 sm:text-6xl">
-            Presentations for Procrastinators
+      <section className="mx-auto max-w-6xl px-4 pb-12 pt-14">
+        <div className="mx-auto max-w-4xl text-center gap-2">
+          <h1 className="mt-5 text-balance text-5xl font-semibold tracking-tight text-zinc-950 sm:text-3xl">
+            Realtime Speech Visualizer
           </h1>
-          <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-zinc-600 sm:text-xl">
-            AI Generated Slides While You Do The Talking!
+          <p className="mx-auto mt-5 max-w-3xl text-pretty text-lg text-zinc-600 sm:text-lg">
+             You Tell Them, WingIt Shows Them!
           </p>
-
-
         </div>
       </section>
 
