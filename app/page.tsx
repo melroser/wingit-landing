@@ -7,29 +7,23 @@ import posthog from "posthog-js";
 const MenuIcon = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
 );
-
 const XIcon = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
 );
-
 const ChevronDown = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M7 10l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
-
 const ArrowRight = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M5 12h12m-5-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
-
 const CheckIcon = (p: React.SVGProps<SVGSVGElement>) => (
-      <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
-
-const ZapIcon = (p: React.SVGProps<SVGSVGElement>) => (
-      <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-);
-
 const VoiceIcon = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+);
+const PlayCircle = (p: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" {...p}><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8" /><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 
 // --- The Custom W-Plane Logo ---
@@ -49,14 +43,15 @@ const WingItLogo = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Reusable "Hero Style" Heading for every section
-const SectionHero = ({ textTop, textBottom }: { textTop: string; textBottom: string }) => (
-  <div className="mx-auto max-w-5xl text-center px-4 mb-20">
-    <h2 className="text-balance text-4xl font-extrabold tracking-tight text-zinc-900 sm:text-6xl">
-      {textTop} <br />
+// --- New Hero-Style Heading Component ---
+const SectionHero = ({ prefix, highlight, suffix }: { prefix: string; highlight: string; suffix?: string }) => (
+  <div className="mx-auto max-w-5xl text-center px-4 mb-16">
+    <h2 className="text-balance text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-5xl">
+      {prefix}{" "}
       <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-        {textBottom}
+        {highlight}
       </span>
+      {suffix && ` ${suffix}`}
     </h2>
   </div>
 );
@@ -111,21 +106,28 @@ function NavDropdown({ label, items }: { label: string; items: Array<{ title: st
   );
 }
 
-// Mobile Disclosure Component
+// Updated Mobile Disclosure (Bigger, easier to use)
 function MobileDisclosure({ label, items, isOpen, onToggle }: { label: string; items: Array<{ title: string; href: string }>; isOpen: boolean; onToggle: () => void }) {
   return (
     <div className="border-b border-zinc-100 last:border-0">
-      <button onClick={onToggle} className="flex w-full items-center justify-between py-3 text-left text-lg font-semibold text-zinc-900">
+      <button 
+        onClick={onToggle} 
+        className="flex w-full items-center justify-between py-5 text-left text-xl font-bold text-zinc-900 active:bg-zinc-50 transition-colors"
+      >
         {label}
-        <ChevronDown className={cx("h-5 w-5 text-zinc-400 transition-transform", isOpen && "rotate-180")} />
+        <div className={cx("rounded-full bg-zinc-100 p-2 transition-transform duration-200", isOpen && "rotate-180 bg-indigo-50 text-indigo-600")}>
+            <ChevronDown className="h-5 w-5" />
+        </div>
       </button>
-      {isOpen && (
-        <div className="pb-3 pl-4 space-y-3">
+      
+      {/* Animated Height Container */}
+      <div className={cx("overflow-hidden transition-all duration-300 ease-in-out", isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0")}>
+        <div className="pb-6 pl-2 space-y-4">
           {items.map((it) => (
             <a 
               key={it.title} 
               href={it.href} 
-              className="block text-base text-zinc-600 hover:text-indigo-600"
+              className="block text-lg font-medium text-zinc-500 hover:text-indigo-600 active:text-indigo-600"
               onClick={() => {
                 posthog.capture('mobile_nav_item_clicked', { category: label, item: it.title });
               }}
@@ -134,22 +136,26 @@ function MobileDisclosure({ label, items, isOpen, onToggle }: { label: string; i
             </a>
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 function SolutionRow({ id, title, desc, mediaSrc, align = "left" }: { id: string; title: string; desc: string; mediaSrc: string; align?: "left" | "right" }) {
   const isMp4 = mediaSrc.toLowerCase().endsWith(".mp4");
+  
   return (
     <div id={id} className={cx("min-h-screen scroll-mt-16 flex items-center justify-center py-12")}>
         <div className={cx("grid items-center gap-12 md:grid-cols-2", align === "right" && "md:[&>*:first-child]:order-2")}>
             <div>
-                <div className="text-xs font-bold tracking-wider text-indigo-600 uppercase mb-2">Use Case</div>
-                <h3 className="text-3xl font-bold tracking-tight text-zinc-900 md:text-4xl">{title}</h3>
-                <p className="mt-6 text-lg text-zinc-600 leading-relaxed">{desc}</p>
+                {/* Embedded Section Hero for each row to match your request exactly */}
+                <h3 className="text-3xl font-extrabold tracking-tight text-zinc-900 md:text-4xl mb-6">
+                    {title}
+                </h3>
+                
+                <p className="text-lg text-zinc-600 leading-relaxed">{desc}</p>
                 <div className="mt-8">
-                <Button href="https://app.wingit.dev" variant="ghost" onClick={() => posthog.capture('solution_cta_clicked', { solution: title })}>
+                <Button href="https://app.wingit.dev" variant="ghost" onClick={() => posthog.capture('solution_cta_clicked', { solution: id })}>
                     See Example <ArrowRight className="h-4 w-4" />
                 </Button>
                 </div>
@@ -163,7 +169,7 @@ function SolutionRow({ id, title, desc, mediaSrc, align = "left" }: { id: string
                     <div className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
                     <div className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
                     </div>
-                    <div className="text-xs font-medium text-zinc-400 ml-2">{title}</div>
+                    <div className="text-xs font-medium text-zinc-400 ml-2">Wingit Preview</div>
                 </div>
                 {isMp4 ? (
                     <video 
@@ -172,12 +178,12 @@ function SolutionRow({ id, title, desc, mediaSrc, align = "left" }: { id: string
                         loop 
                         muted 
                         playsInline
-                        onPlay={() => posthog.capture('solution_video_played', { solution: title })}
+                        onPlay={() => posthog.capture('solution_video_played', { solution: id })}
                     >
                     <source src={mediaSrc} type="video/mp4" />
                     </video>
                 ) : (
-                    <img src={mediaSrc} alt={title} className="aspect-video w-full bg-zinc-100 object-cover" />
+                    <img src={mediaSrc} alt="Preview" className="aspect-video w-full bg-zinc-100 object-cover" />
                 )}
                 </div>
             </div>
@@ -194,6 +200,16 @@ export default function Page() {
   const [appsOpen, setAppsOpen] = React.useState(false);
   const [solutionsOpen, setSolutionsOpen] = React.useState(false);
   const [resourcesOpen, setResourcesOpen] = React.useState(false);
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileOpen) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [mobileOpen]);
 
   const LINKS = {
     signIn: "https://app.wingit.dev/auth?mode=login",
@@ -223,10 +239,11 @@ export default function Page() {
 
   return (
     <main className="min-h-screen text-zinc-950 bg-loom font-sans selection:bg-indigo-100">
-
+      
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+            
             {/* Brand + Logo */}
             <div className="flex items-center gap-8">
                 <a href="/" className="flex items-center gap-2.5 group" onClick={() => posthog.capture('nav_logo_clicked')}>
@@ -265,6 +282,7 @@ export default function Page() {
                 </a>
                 <Button 
                   href={LINKS.signUp}
+                  className="hidden md:inline-flex"
                   onClick={() => posthog.capture('cta_try_wingit_free_clicked', { location: 'nav_desktop' })}
                 >
                   Try Wingit
@@ -273,78 +291,96 @@ export default function Page() {
                 {/* Mobile hamburger */}
                 <button
                     type="button"
-                    className="md:hidden p-2 text-zinc-600"
+                    className="md:hidden p-2 text-zinc-600 rounded-full active:bg-zinc-100"
                     onClick={() => {
                         setMobileOpen(true);
                         posthog.capture('mobile_menu_opened');
                     }}
                 >
-                    <MenuIcon className="h-6 w-6" />
+                    <MenuIcon className="h-7 w-7" />
                 </button>
             </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* --- FULL SCREEN MOBILE MENU OVERLAY --- */}
         {mobileOpen && (
-          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
-            <div className="p-4">
-                <div className="flex justify-between items-center mb-6">
-                    <span className="font-bold text-xl">Menu</span>
-                    <button onClick={() => setMobileOpen(false)} className="p-2"><XIcon className="h-6 w-6" /></button>
+          <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-xl animate-in fade-in duration-200">
+            <div className="flex flex-col h-full">
+                
+                {/* Mobile Header */}
+                <div className="flex items-center justify-between px-4 py-4 border-b border-zinc-100">
+                    <div className="flex items-center gap-2">
+                        <WingItLogo className="h-8 w-8 text-black" />
+                        <span className="text-xl font-bold tracking-tight text-zinc-900">Wingit</span>
+                    </div>
+                    <button 
+                        onClick={() => setMobileOpen(false)} 
+                        className="p-2 rounded-full bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-900"
+                    >
+                        <XIcon className="h-6 w-6" />
+                    </button>
                 </div>
                 
-                <div className="flex flex-col gap-2">
-                    <MobileDisclosure 
-                        label="Apps" 
-                        items={apps} 
-                        isOpen={appsOpen} 
-                        onToggle={() => setAppsOpen(!appsOpen)} 
-                    />
-                    <MobileDisclosure 
-                        label="Solutions" 
-                        items={solutions} 
-                        isOpen={solutionsOpen} 
-                        onToggle={() => setSolutionsOpen(!solutionsOpen)} 
-                    />
-                    <MobileDisclosure 
-                        label="Resources" 
-                        items={resources} 
-                        isOpen={resourcesOpen} 
-                        onToggle={() => setResourcesOpen(!resourcesOpen)} 
-                    />
-                    <a 
-                        href="#pricing" 
-                        onClick={() => {
-                            setMobileOpen(false);
-                            posthog.capture('mobile_nav_link_clicked', { link: 'Pricing' });
-                        }} 
-                        className="py-3 text-lg font-semibold text-zinc-900 border-b border-zinc-100"
-                    >
-                        Pricing
-                    </a>
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto px-6 py-6">
+                    <div className="flex flex-col gap-2">
+                        <MobileDisclosure 
+                            label="Apps" 
+                            items={apps} 
+                            isOpen={appsOpen} 
+                            onToggle={() => setAppsOpen(!appsOpen)} 
+                        />
+                        <MobileDisclosure 
+                            label="Solutions" 
+                            items={solutions} 
+                            isOpen={solutionsOpen} 
+                            onToggle={() => setSolutionsOpen(!solutionsOpen)} 
+                        />
+                        <MobileDisclosure 
+                            label="Resources" 
+                            items={resources} 
+                            isOpen={resourcesOpen} 
+                            onToggle={() => setResourcesOpen(!resourcesOpen)} 
+                        />
+                        <a 
+                            href="#pricing" 
+                            onClick={() => {
+                                setMobileOpen(false);
+                                posthog.capture('mobile_nav_link_clicked', { link: 'Pricing' });
+                            }} 
+                            className="flex w-full items-center justify-between py-5 text-left text-xl font-bold text-zinc-900 border-b border-zinc-100 active:bg-zinc-50"
+                        >
+                            Pricing
+                        </a>
+                    </div>
                 </div>
 
-                <div className="mt-8 flex flex-col gap-4">
-                    <Button 
-                        href={LINKS.signUp} 
-                        className="w-full justify-center text-lg py-3"
-                        onClick={() => posthog.capture('cta_try_wingit_free_clicked', { location: 'mobile_menu' })}
-                    >
-                        Try Wingit Free
-                    </Button>
-                    <a 
-                        href={LINKS.signIn} 
-                        className="w-full text-center py-3 text-lg font-semibold text-zinc-600 hover:text-zinc-900 border border-zinc-200 rounded-full"
-                        onClick={() => posthog.capture('cta_sign_in_clicked', { location: 'mobile_menu' })}
-                    >
-                        Log In
-                    </a>
+                {/* Fixed Bottom Actions */}
+                <div className="p-6 border-t border-zinc-100 bg-white pb-10">
+                    <div className="flex flex-col gap-4">
+                        <Button 
+                            href={LINKS.signUp} 
+                            className="w-full justify-center h-14 text-lg font-bold shadow-lg shadow-indigo-200/50"
+                            onClick={() => posthog.capture('cta_try_wingit_free_clicked', { location: 'mobile_menu' })}
+                        >
+                            Try Wingit Free
+                        </Button>
+                        <a 
+                            href={LINKS.signIn} 
+                            className="flex items-center justify-center w-full h-14 rounded-full border-2 border-zinc-200 text-lg font-bold text-zinc-600 hover:text-zinc-900 hover:border-zinc-300 transition-colors"
+                            onClick={() => posthog.capture('cta_sign_in_clicked', { location: 'mobile_menu' })}
+                        >
+                            Log In
+                        </a>
+                    </div>
                 </div>
+
             </div>
           </div>
         )}
       </header>
- {/* HERO SECTION (Keep exactly as is) */}
+
+      {/* HERO SECTION (Video Restored) */}
       <section className="relative mx-auto max-w-6xl px-4 pt-16 pb-24 text-center">
         <h1 className="mx-auto max-w-4xl text-balance text-5xl font-extrabold tracking-tight text-zinc-900 sm:text-7xl">
           AI-generated slides<br />
@@ -356,7 +392,6 @@ export default function Page() {
         <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-zinc-600 sm:text-xl leading-relaxed">
           Talk → transcribe → visualize. WingIt turns your live speaking into clean, shareable slides in real time.
         </p>
-
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button 
@@ -373,11 +408,11 @@ export default function Page() {
             className="h-12 px-8 text-base"
             onClick={() => posthog.capture('cta_watch_demo_clicked', { location: 'hero' })}
           >
-            Watch demo
+            Watch demo <PlayCircle className="ml-2 h-5 w-5" />
           </Button>
         </div>
 
-        {/* Hero Video Slab */}
+        {/* Hero Video Slab (RESTORED) */}
         <div className="mt-16 relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-[2.5rem] blur-2xl" />
             <div className="relative rounded-[2rem] border border-zinc-200 bg-white p-2 shadow-2xl">
@@ -393,105 +428,128 @@ export default function Page() {
                 </div>
             </div>
         </div>
-
       </section>
-      {/* SOLUTIONS SECTION */}
-      <section id="solutions" className="mx-auto max-w-6xl px-4 border-t border-zinc-200/50 py-24">
-        
-        {/* NEW: Hero-Style Section Header */}
-        <SectionHero 
-            textTop="Imagine generating" 
-            textBottom="Presentations Realtime." 
-        />
 
-        <div className="flex flex-col">
-          <SolutionRow
+      {/* SOLUTIONS SECTION */}
+      <section id="solutions" className="mx-auto max-w-6xl px-4 border-t border-zinc-200/50">
+        
+        {/* Solution 1: Presentations */}
+        <SolutionRow
             id="solutions-presentations"
-            title="Presentations"
+            title={
+                <span>
+                    Imagine generating <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Presentations</span> in real-time.
+                </span> as any
+            }
             desc="Turn your stream of consciousness into a structured deck. Iterate slide-by-slide without ever touching a layout tool. Perfect for unplanned updates or last-minute pitches."
             mediaSrc="/gifs/presentations.mp4"
-          />
-          <SolutionRow
+        />
+
+        {/* Solution 2: Meetings */}
+        <SolutionRow
             id="solutions-meetings"
-            title="Meetings"
+            title={
+                <span>
+                    Transform your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Meetings</span> into decks.
+                </span> as any
+            }
             desc="Stop sending Notion docs nobody reads. Turn your meeting notes into a shareable deck that visualizes your key points instantly. Keep the team aligned with zero prep."
             mediaSrc="/gifs/meetings.mp4"
             align="right"
-          />
-          {/* ... (rest of solutions keep exactly as is) ... */}
-          <SolutionRow
+        />
+
+        {/* Solution 3: Lessons */}
+        <SolutionRow
             id="solutions-lessons"
-            title="Educational Lessons"
+            title={
+                <span>
+                    Visualise complex <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Lessons</span> effortlessly.
+                </span> as any
+            }
             desc="Teach complex topics with pacing and clarity. WingIt generates diagrams and bullet points as you explain concepts, helping students follow your train of thought visually."
             mediaSrc="/gifs/lessons.mp4"
-          />
-          <SolutionRow
+        />
+
+        {/* Solution 4: Podcasts */}
+        <SolutionRow
             id="solutions-podcasts"
-            title="Podcasts & Audio"
+            title={
+                <span>
+                    Turn audio <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Podcasts</span> into content.
+                </span> as any
+            }
             desc="Give your audio content a visual dimension. Turn an episode outline into a companion deck for YouTube or social snippets. Engage visual learners without hiring an editor."
             mediaSrc="/gifs/podcasts.mp4"
             align="right"
-          />
-          <SolutionRow
+        />
+
+        {/* Solution 5: Video Calls */}
+        <SolutionRow
             id="solutions-video-calls"
-            title="Video Calls"
+            title={
+                <span>
+                    Recap your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Video Calls</span> visually.
+                </span> as any
+            }
             desc="Don't just send a recording link. Send a WingIt deck that summarizes the call visually. Perfect for client follow-ups, internal recaps, and async standups."
             mediaSrc="/gifs/video-calls.mp4"
-          />
-        </div>
+        />
       </section>
 
       {/* RESOURCES SECTION */}
       <section className="border-t border-zinc-200/50 py-24">
-        
-        {/* NEW: Hero-Style Section Header */}
-        <SectionHero 
-            textTop="Everything you need to" 
-            textBottom="Get Started." 
-        />
-
         <div className="mx-auto max-w-4xl px-4 grid gap-24">
-            {/* ... (Keep existing resources cards exactly as is) ... */}
+            
             <div id="whatdo" className="scroll-mt-32">
+                <SectionHero 
+                    prefix="Solve the" 
+                    highlight="Blank Page" 
+                    suffix="problem."
+                />
                 <div className="rounded-3xl border border-zinc-200 bg-white p-10 shadow-sm">
                     <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">The Concept</span>
                     <h3 className="mt-2 text-3xl font-bold text-zinc-900">What is WingIt?</h3>
                     <div className="mt-6 space-y-4 text-lg text-zinc-600 leading-relaxed">
-                        <p>We've all been there: you have a great idea, but the thought of opening PowerPoint kills your momentum. <strong>WingIt solves the "Blank Page Problem."</strong></p>
+                        <p>We've all been there: you have a great idea, but the thought of opening PowerPoint kills your momentum.</p>
                         <p>It allows you to create presentations at the speed of speech. You simply talk, and our AI listens, understands your structure, and generates slides in real-time.</p>
                     </div>
                 </div>
             </div>
 
             <div id="quickstart" className="scroll-mt-32">
+                <SectionHero 
+                    prefix="Follow our" 
+                    highlight="Quickstart" 
+                    suffix="guide."
+                />
                 <div className="rounded-3xl border border-zinc-200 bg-white p-10 shadow-sm">
-                    <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">Getting Started</span>
-                    <h3 className="mt-2 text-3xl font-bold text-zinc-900">Quickstart Guide</h3>
                     <div className="mt-8 grid gap-6 md:grid-cols-3">
-                        {/* ... (content same as before) ... */}
                         <div className="space-y-2">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-900">1</div>
                             <h4 className="font-bold text-zinc-900">Log In & Mic Check</h4>
-                            <p className="text-sm text-zinc-600">Create a free account. Grant browser microphone permissions when prompted.</p>
+                            <p className="text-sm text-zinc-600">Create a free account. Grant browser microphone permissions.</p>
                         </div>
                         <div className="space-y-2">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-900">2</div>
                             <h4 className="font-bold text-zinc-900">Just Start Talking</h4>
-                            <p className="text-sm text-zinc-600">Press record. WingIt will detect topic shifts and create new slides automatically.</p>
+                            <p className="text-sm text-zinc-600">Press record. WingIt will detect topic shifts.</p>
                         </div>
                         <div className="space-y-2">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 font-bold text-zinc-900">3</div>
                             <h4 className="font-bold text-zinc-900">Export & Share</h4>
-                            <p className="text-sm text-zinc-600">Stop recording. Edit if needed, then share the public link or export to PDF.</p>
+                            <p className="text-sm text-zinc-600">Stop recording. Edit if needed, then share.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="how" className="scroll-mt-32">
+                <SectionHero 
+                    prefix="See exactly" 
+                    highlight="How it Works" 
+                    suffix="under the hood."
+                />
                 <div className="rounded-3xl border border-zinc-200 bg-white p-10 shadow-sm">
-                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Under the Hood</span>
-                    <h3 className="mt-2 text-3xl font-bold text-zinc-900">How It Works</h3>
                     <div className="mt-6 space-y-4 text-lg text-zinc-600 leading-relaxed">
                         <p>WingIt uses a multi-stage AI pipeline to ensure low latency and high accuracy.</p>
                         <ul className="list-disc pl-5 space-y-2">
@@ -504,11 +562,13 @@ export default function Page() {
             </div>
 
             <div id="roadmap" className="scroll-mt-32">
+                <SectionHero 
+                    prefix="Explore our" 
+                    highlight="Roadmap" 
+                    suffix="ahead."
+                />
                 <div className="rounded-3xl border border-zinc-200 bg-white p-10 shadow-sm">
-                    <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">Looking Ahead</span>
-                    <h3 className="mt-2 text-3xl font-bold text-zinc-900">Roadmap</h3>
                     <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                        {/* ... (content same as before) ... */}
                         <div className="rounded-xl bg-zinc-50 p-4">
                             <div className="font-bold text-zinc-900">Q3 2026: Theming Engine</div>
                             <p className="text-sm text-zinc-600 mt-1">Custom fonts, colors, and branding support.</p>
@@ -535,15 +595,15 @@ export default function Page() {
       <section id="pricing" className="py-24 px-4 scroll-mt-16">
         <div className="mx-auto max-w-6xl">
             
-            {/* NEW: Hero-Style Section Header */}
+            {/* HERO-STYLE HEADER FOR PRICING */}
             <SectionHero 
-                textTop="Unlock access to" 
-                textBottom="Premium AI Voices." 
+                prefix="Unlock premium" 
+                highlight="AI Voices" 
+                suffix="today."
             />
 
-            {/* Features Grid (Keep exactly as is) */}
+            {/* Features Grid */}
             <div className="grid md:grid-cols-4 gap-6 mb-16">
-                {/* ... (Features content) ... */}
                 <div className="p-6 bg-zinc-50/80 backdrop-blur-sm rounded-2xl border border-zinc-100">
                     <div className="text-3xl mb-3">🤖</div>
                     <h4 className="font-bold text-zinc-900">Premium AI Voices</h4>
@@ -566,7 +626,7 @@ export default function Page() {
                 </div>
             </div>
 
-            {/* Pricing Cards (Keep exactly as is) */}
+            {/* Pricing Cards */}
             <div className="grid lg:grid-cols-3 gap-8 items-start">
                 
                 {/* Free Tier */}
