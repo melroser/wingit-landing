@@ -3,6 +3,35 @@
 import React from "react";
 import posthog from "posthog-js";
 
+function useWingItUrl(baseUrl: string): string {
+  const [url, setUrl] = React.useState(baseUrl);
+
+  React.useEffect(() => {
+    // Only run on client after hydration
+    const globalHelper = (window as any).__addPostHogIdsToUrl;
+    if (typeof globalHelper === 'function') {
+      setUrl(globalHelper(baseUrl));
+      return;
+    }
+
+    const distinctId = posthog?.get_distinct_id?.();
+    const sessionId = posthog?.get_session_id?.();
+
+    if (!distinctId && !sessionId) return;
+
+    try {
+      const parsed = new URL(baseUrl);
+      if (distinctId) parsed.searchParams.set('ph_distinct_id', distinctId);
+      if (sessionId) parsed.searchParams.set('ph_session_id', sessionId);
+      setUrl(parsed.toString());
+    } catch {
+      // Invalid URL, keep base
+    }
+  }, [baseUrl]);
+
+  return url;
+}
+
 // --- Icons ---
 const MenuIcon = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...p}><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
@@ -143,6 +172,7 @@ function MobileDisclosure({ label, items, isOpen, onToggle }: { label: string; i
 
 function SolutionRow({ id, title, desc, mediaSrc, align = "left" }: { id: string; title: string; desc: string; mediaSrc: string; align?: "left" | "right" }) {
   const isMp4 = mediaSrc.toLowerCase().endsWith(".mp4");
+  const solutionUrl = useWingItUrl('https://app.wingit.dev/auth?mode=login');
   
   return (
     <div id={id} className={cx("min-h-screen scroll-mt-16 flex items-center justify-center py-12")}>
@@ -155,7 +185,11 @@ function SolutionRow({ id, title, desc, mediaSrc, align = "left" }: { id: string
                 
                 <p className="text-lg text-zinc-600 leading-relaxed">{desc}</p>
                 <div className="mt-8">
-                <Button href="https://app.wingit.dev" variant="ghost" onClick={() => posthog.capture('solution_cta_clicked', { solution: id })}>
+                <Button
+                    href={solutionUrl}
+                    variant="ghost"
+                    onClick={() => posthog.capture('solution_cta_clicked', { solution: id })}
+                >
                     See Example <ArrowRight className="h-4 w-4" />
                 </Button>
                 </div>
@@ -211,13 +245,14 @@ export default function Page() {
     return () => { document.body.style.overflow = 'unset'; };
   }, [mobileOpen]);
 
-  const LINKS = {
-    signIn: "https://app.wingit.dev/auth?mode=login",
-    signUp: "https://app.wingit.dev/auth?mode=register",
-  };
+  // Compute URLs dynamically with PostHog IDs (deferred to avoid hydration mismatch)
+  const signInUrl = useWingItUrl('https://app.wingit.dev/auth?mode=login');
+  const signUpUrl = useWingItUrl('https://app.wingit.dev/auth?mode=register');
+
+  const LINKS = { signIn: signInUrl, signUp: signUpUrl };
 
   const apps = [
-    { title: "Wingit", href: "https://wingit.dev", desc: "AI Generated Slides" },
+    { title: "Wingit", href: signInUrl, desc: "AI Generated Slides" },
     { title: "GetTheBag", href: "#", desc: "Jira for jobseekers" },
     { title: "Moreannon", href: "#", desc: "MCP Tool for AI Consensus" },
   ];
