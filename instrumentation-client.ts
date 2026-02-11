@@ -42,7 +42,7 @@ export function initPostHog() {
     capture_pageview: true,    
     capture_exceptions: true,    
     debug: !isProd,    
-    person_profiles: 'always',  
+    person_profiles: 'identified_only',  
   };
 
   // Add bootstrap if IDs exist  
